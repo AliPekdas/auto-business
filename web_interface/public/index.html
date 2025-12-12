@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demirhan Otomotiv - Yönetim Paneli</title>
+    <link rel="icon" href="image.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+</head>
+    <body>
+
+        <div class="sidebar">
+            
+            <div class="sidebar-header">
+                <h2>Demirhan Otomotiv</h2>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="sidebar-divider">Hızlı İşlemler</div>
+                <button class="nav-btn active" onclick="showSection('saleSection')">Satış Yap</button>
+                <button class="nav-btn" onclick="showSection('restockSection')">Stok Ekle</button>
+                <button class="nav-btn" onclick="showSection('priceSection')">Fiyat Güncelle</button>
+                <button class="nav-btn" onclick="showSection('garageSection')">Araç Sorgula</button>
+                <button class="nav-btn" onclick="showSection('deleteVehicleSection')">Araç Kaydı Sil</button>
+                <button class="nav-btn" onclick="showSection('financeSection')">Finansal Rapor</button>
+                
+                <div class="sidebar-divider">Veri Yönetimi</div>
+                <button class="nav-btn" onclick="loadTable('Customer')">👥 Müşteri</button>
+                <button class="nav-btn" onclick="loadTable('Product')">🔧 Ürün</button>
+
+                <button id="aboutBtn" class="nav-btn" onclick="loadAboutPage()">Hakkımızda</button>
+            </div>
+
+            <div class="sidebar-footer">
+                <p>© 2025 Auto Business</p>
+                <p style="font-size: 0.75rem; color: #7f8c8d;">Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+
+
+        <div class="main-content">
+            
+            <div id="saleSection" class="section active">
+                <h1>Hızlı Satış Ekranı</h1>
+                <p>Satış işlemi stoktan düşer ve muhasebeye işlenir.</p>
+                <form id="saleForm">
+                    <div class="form-group">
+                        <label>Müşteri ID:</label>
+                        <input type="number" id="customerId" placeholder="Örn: 1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ürün ID:</label>
+                        <input type="number" id="productId" placeholder="Örn: 2" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Adet:</label>
+                        <input type="number" id="quantity" value="1" min="1" required>
+                    </div>
+                    <button type="submit" class="action-btn">Satışı Onayla</button>
+                </form>
+            </div>
+
+            <div id="restockSection" class="section">
+                <h1>Manuel Stok Ekleme</h1>
+                <p>Satın alma faturası oluşturmadan, sayım farklarını düzeltmek için kullanılır.</p>
+                <form id="restockForm">
+                    <div class="form-group">
+                        <label>Ürün ID:</label>
+                        <input type="number" id="restockProductId" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Eklenecek Miktar:</label>
+                        <input type="number" id="restockQuantity" min="1" required>
+                    </div>
+                    <button type="submit" class="action-btn btn-success">Stoğu Güncelle</button>
+                </form>
+            </div>
+
+            <div id="priceSection" class="section">
+                <h1>Ürün Fiyatı Güncelleme</h1>
+                <p>Bir ürüne yüzde bazında zam veya indirim uygular.</p>
+                <form id="priceForm">
+                    <div class="form-group">
+                        <label>Ürün ID:</label>
+                        <input type="number" id="priceProductId" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Yüzde (%):</label>
+                        <input type="number" id="pricePercentage" step="0.01" placeholder="Örn: 10.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>İşlem Türü:</label>
+                        <select id="priceIsIncrease">
+                            <option value="1">Zam</option>
+                            <option value="0">İndirim</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="action-btn btn-warning">Fiyatı Güncelle</button>
+                </form>
+            </div>
+
+            <div id="garageSection" class="section">
+                <h1>Müşteri Araç Sorgulama</h1>
+                <div class="form-group">
+                    <label>Müşteri Adı:</label>
+                    <div class="search-row">
+                        <input type="text" id="searchName" placeholder="Örn: Ahmet Yılmaz">
+                        <button onclick="searchGarage()" class="action-btn">Ara</button>
+                    </div>
+                </div>
+                <table id="garageTable">
+                    <thead><tr><th>Müşteri</th><th>Plaka</th><th>Marka</th><th>Model Yılı</th></tr></thead>
+                    <tbody id="garageResults"></tbody>
+                </table>
+            </div>
+
+            <div id="deleteVehicleSection" class="section">
+                <h1>Araç Kaydı Silme</h1>
+                <p style="color:red;">DİKKAT: Bu işlem geri alınamaz!</p>
+                <form id="deleteVehicleForm">
+                    <div class="form-group">
+                        <label>Hangi yıldan öncekiler silinsin?</label>
+                        <input type="number" id="cutoffYear" placeholder="Örn: 2005" required>
+                    </div>
+                    <button type="submit" class="action-btn">Araçları Sil</button>
+                </form>
+            </div>
+
+            <div id="financeSection" class="section">
+                <h1>Finansal Rapor</h1>
+                <div class="form-group"><label>Başlangıç:</label><input type="date" id="startDate" value="2025-10-01"></div>
+                <div class="form-group"><label>Bitiş:</label><input type="date" id="endDate" value="2025-11-30"></div>
+                <button onclick="getRevenue()" class="action-btn">Gelir Hesapla</button>
+                <div class="revenue-box">Toplam Gelir: <span id="revenueDisplay">0.00 TL</span></div>
+            </div>
+
+            <div id="managementSection" class="section">
+                <h1 id="tableTitle">Tablo Yönetimi</h1>
+                
+                <div class="card-box">
+                    <div class="control-group">
+                        <div class="search-row">
+                            <input type="text" id="tableSearchInput" onkeyup="filterTable()" placeholder="Tabloda ara...">
+                            <button onclick="loadTable(currentTable)" class="action-btn" style="background:#7f8c8d;">Yenile</button>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <div class="control-group">
+                        <label style="margin-bottom: 10px; color:#2c3e50;">Yeni Kayıt / Güncelleme Bilgileri:</label>
+                        <div id="dynamicFormContainer" class="form-grid">
+                            <p style="color:#95a5a6; font-style:italic;">Lütfen soldan bir tablo seçin...</p>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <div class="action-grid">
+                        
+                        <div class="action-col">
+                            <button onclick="saveData()" class="action-btn btn-success">Yeni Ekle</button>
+                        </div>
+
+                        <div class="action-col border-left">
+                            <div class="input-group">
+                                <input type="number" id="updateId" placeholder="ID">
+                                <button onclick="updateData()" class="action-btn btn-warning">Güncelle</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="dynamicTable">
+                        <thead><tr id="tableHeaders"></tr></thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="statusMessage"></div>
+        </div>
+
+        <div id="aboutSection" class="section">
+            <h1>Demirhan Otomotiv</h1>
+            
+            <div class="card-box about-container">
+                <div class="about-grid">
+
+                    <div class="info-card">
+                        <h4>Adres</h4>
+                        <p id="compAddress">...</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h4>İletişim</h4>
+                        <p><strong>Tel:</strong> <span id="compPhone">...</span></p>
+                        <p><strong>Email:</strong> <span id="compEmail">...</span></p>
+                    </div>
+
+                    <div class="info-card">
+                        <h4>Resmi Bilgiler</h4>
+                        <p><strong>Vergi No:</strong> <span id="compTax">...</span></p>
+                        <p><strong>Şirket ID:</strong> <span id="compID">...</span></p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+        <script src="script.js"></script>
+    </body>
+</html>
