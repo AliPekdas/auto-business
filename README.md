@@ -1,6 +1,6 @@
 # Demirhan Otomotiv - Yönetim Paneli
 
-Araç satış, stok takibi, finansal raporlama ve müşteri yönetimini tek bir platformda toplayan web tabanlı bir otomasyon sistemidir.
+**Demirhan Otomotiv**, Araç satış, stok takibi, finansal raporlama ve müşteri yönetimini tek bir platformda toplayan web tabanlı bir otomasyon sistemidir.
 
 Bu proje, işletmenin veritabanı ile etkileşime girerek satış işlemlerini hızlandırır ve dinamik veri yönetimini (CRUD) kolaylaştırır.
 
